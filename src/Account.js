@@ -9,6 +9,7 @@ export default class Account extends Component {
     }
 
     this.handleDepositClick = this.handleDepositClick.bind(this)
+    this.handleWithdrawClick = this.handleWithdrawClick.bind(this)
   }
 
   handleDepositClick(e) {
@@ -18,11 +19,34 @@ export default class Account extends Component {
     }
     else {
       let amount = +this.refs.amount.value;
-      let newBalance = this.state.balance + amount;
-      this.setState({
-        balance: newBalance
-      })
-      this.refs.amount.value = '';
+      if (amount > 0) {
+        let newBalance = this.state.balance + amount;
+        this.setState({
+          balance: newBalance
+        })
+        this.refs.amount.value = '';
+      }else{
+        console.log("Deposit should be positive")
+      }
+    }
+  }
+
+  handleWithdrawClick(e) {
+    e.preventDefault();
+    if (isNaN(this.refs.amount.value)) {
+      console.log("Not a number");
+    }
+    else {
+      let amount = +this.refs.amount.value;
+      if (amount <= this.state.balance && amount > 0) {
+        let newBalance = this.state.balance - amount;
+        this.setState({
+          balance: newBalance
+        })
+        this.refs.amount.value = '';
+      }else{
+        console.log("cannot withdraw more than current balance and withdraw must be positive")
+      }
     }
   }
 
